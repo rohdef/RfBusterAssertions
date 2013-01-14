@@ -1,4 +1,4 @@
-buster.testCase "ConnectivityMap with maps loaded", {
+buster.testCase "Test assertions", {
   setUp: () ->
     this.server = this.useFakeServer()
     this.url = 'dummy.js'
