@@ -3,15 +3,24 @@
 
   buster.testCase("ConnectivityMap with maps loaded", {
     setUp: function() {
-      return this.url = 'dummy.js';
+      var script, scripts, _i, _len, _results;
+      this.server = this.useFakeServer();
+      this.url = 'dummy.js';
+      scripts = document.getElementsByTagName('script');
+      _results = [];
+      for (_i = 0, _len = scripts.length; _i < _len; _i++) {
+        script = scripts[_i];
+        _results.push(script.parentElement.removeChild(script));
+      }
+      return _results;
     },
     "URL is registered on XHR": function() {
       var request;
       request = new XMLHttpRequest();
       request.open('GET', this.url, false);
       request.send();
-      assert.urlLoaded("dummy.js");
-      return expect("dummy.js").toBeAnLoadedUrl();
+      assert.urlRequest(this.server, "dummy.js");
+      return expect(this.server).toHaveRequestedTheUrl("dummy.js");
     },
     "URL is registered when adding a script element to head": function() {
       var script;
@@ -19,8 +28,8 @@
       script.type = "text/javascript";
       script.src = this.url;
       document.head.appendChild(script);
-      assert.urlLoaded("dummy.js");
-      return expect("dummy.js").toBeAnLoadedUrl();
+      assert.urlRequest(this.server, "dummy.js");
+      return expect(this.server).toHaveRequestedTheUrl("dummy.js");
     },
     "URL is registered when adding a script element to body": function() {
       var script;
@@ -28,8 +37,8 @@
       script.type = "text/javascript";
       script.src = this.url;
       document.body.appendChild(script);
-      assert.urlLoaded("dummy.js");
-      return expect("dummy.js").toBeAnLoadedUrl();
+      assert.urlRequest(this.server, "dummy.js");
+      return expect(this.server).toHaveRequestedTheUrl("dummy.js");
     }
   });
 
