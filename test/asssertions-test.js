@@ -6,6 +6,7 @@
       var script, scripts, _i, _len, _results;
       this.server = this.useFakeServer();
       this.url = 'dummy.js';
+      this.urlWithGet = this.url + "?random=get&parameters=work";
       scripts = document.getElementsByTagName('script');
       _results = [];
       for (_i = 0, _len = scripts.length; _i < _len; _i++) {
@@ -39,7 +40,16 @@
       document.body.appendChild(script);
       assert.urlRequest(this.server, "dummy.js");
       return expect(this.server).toHaveRequestedTheUrl("dummy.js");
-    }
+    },
+    "URL registered ignores get parameters": function() {
+      var request;
+      request = new XMLHttpRequest();
+      request.open('GET', this.urlWithGet, false);
+      request.send();
+      assert.urlRequest(this.server, "dummy.js");
+      return expect(this.server).toHaveRequestedTheUrl("dummy.js");
+    },
+    "Get params can be tested": function() {}
   });
 
 }).call(this);
