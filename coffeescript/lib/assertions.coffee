@@ -1,5 +1,8 @@
 buster.assertions.add "urlLoaded", {
-  assert: (a) ->
+  assert: (url) ->
+    
+    
+    
     return false
   
   values: (actual, message) ->
